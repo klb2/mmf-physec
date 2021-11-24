@@ -30,7 +30,7 @@ TODO: Description of measurement files
 ### Running it online
 The easiest way is to use services like [Binder](https://mybinder.org/) to run
 the notebook online. Simply navigate to
-[https://mybinder.org/v2/gl/klb2%2Fris-phase-hopping/master](https://mybinder.org/v2/gl/klb2%2Fris-phase-hopping/master)
+[https://mybinder.org/v2/gh/klb2/mmf-physec/HEAD](https://mybinder.org/v2/gh/klb2/mmf-physec/HEAD)
 to run the notebooks in your browser without setting everything up locally.
 
 ### Local Installation
@@ -40,6 +40,8 @@ The present code was developed and tested with the following versions:
 - Jupyter 1.0
 - numpy 1.21
 - scipy 1.7
+- Pandas 1.1.4
+- h5py 3.1
 
 Make sure you have [Python3](https://www.python.org/downloads/) installed on
 your computer.
@@ -70,3 +72,7 @@ This research was supported in part by the Deutsche Forschungsgemeinschaft
 This program is licensed under the GPLv3 license. If you in any way use this
 code for research that results in publications, please cite our original
 article listed above.
+
+The implementation of the waterfilling algorithm is based on the Matlab
+implementation by Kenneth Shum (2010,
+[https://www.mathworks.com/matlabcentral/fileexchange/28022-waterfilling-algorithm](https://www.mathworks.com/matlabcentral/fileexchange/28022-waterfilling-algorithm)).

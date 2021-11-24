@@ -3,3 +3,5 @@ scipy
 matplotlib
 jupyter
 ipympl
+h5py
+pandas
