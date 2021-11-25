@@ -47,9 +47,9 @@ def unpack_data(received, n=55, _packed_bits=2):
     _received = np.abs(_received)
     return _received
 
-def main(mat_file, data_file):
+def main(mat_file, data_file, export=False, loglevel=logging.INFO):
     logger = logging.getLogger('main')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(loglevel)
 
     _matrices = read_measurement_file(mat_file, precoded=False)
     mat_bob = _matrices[BOB]
@@ -103,13 +103,14 @@ def main(mat_file, data_file):
     _im_bob = fig.add_subplot(gs[1, 0]).matshow(_rec_image_bob, cmap=CMAP)
     _im_eve = fig.add_subplot(gs[1, 1]).matshow(_rec_image_eve, cmap=CMAP)
 
-    os.makedirs(RESULTS_DIR, exist_ok=True)
-    plt.imsave(os.path.join(RESULTS_DIR, "image_original.pdf"),
-               mat_data["transmitted_image"], cmap=CMAP)
-    plt.imsave(os.path.join(RESULTS_DIR, "image_bob.pdf"), _rec_image_bob,
-               cmap=CMAP)
-    plt.imsave(os.path.join(RESULTS_DIR, "image_eve.pdf"), _rec_image_eve,
-               cmap=CMAP)
+    if export:
+        os.makedirs(RESULTS_DIR, exist_ok=True)
+        plt.imsave(os.path.join(RESULTS_DIR, "image_original.pdf"),
+                   mat_data["transmitted_image"], cmap=CMAP)
+        plt.imsave(os.path.join(RESULTS_DIR, "image_bob.pdf"), _rec_image_bob,
+                   cmap=CMAP)
+        plt.imsave(os.path.join(RESULTS_DIR, "image_eve.pdf"), _rec_image_eve,
+                   cmap=CMAP)
     return mat_data
 
 
@@ -120,6 +121,7 @@ if __name__ == "__main__":
     #parser.add_argument("-k", type=int, help="Max number of used modes", default=2)
     parser.add_argument("mat_file", help="Mat-file with matrices")
     parser.add_argument("data_file", help="Mat-file with transmitted data")
+    parser.add_argument("--export", action="store_true")
     args = vars(parser.parse_args())
-    results = main(**args)
+    main(**args)
     plt.show()
