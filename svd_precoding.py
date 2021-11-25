@@ -145,7 +145,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
         #logger.debug("BSC Capac Bob: %s", capac_bob_mc)
         #logger.debug("BSC Capac Eve: %s", capac_eve_mc)
         #logger.debug("Differences: %s", np.maximum(capac_bob_mc-capac_eve_mc, 0))
-        logger.info("Secrecy Capacity: %f", _sec_capac_mc)
+        logger.info("Secrecy Capacity (MC): %f", _sec_capac_mc)
         results["secCapacMC"].append(_sec_capac_mc)
 
         # Theoretical
@@ -161,7 +161,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
         sec_capac = sum(_sec_capac)
         logger.debug("Theo Bit Flip Bob: %s", bit_flip_prob_bob)
         logger.debug("Theo Bit Flip Eve: %s", bit_flip_prob_eve)
-        logger.info("Secrecy capacity: %f", sec_capac)
+        logger.debug("Secrecy capacity (TH): %f", sec_capac)
         results["k"].append(_k)
         results['secCapacTheo'].append(sec_capac)
 
