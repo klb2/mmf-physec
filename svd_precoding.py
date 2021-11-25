@@ -37,7 +37,8 @@ def calc_bit_flip_prob(noise_trans_matrix, power_vec):
     return q_val
 
 
-def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000):
+def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
+         loglevel=logging.INFO):
     os.makedirs(RESULTS_DIR, exist_ok=True)
     _prefix = "SVD"
     if matrix is not None:
@@ -64,7 +65,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000):
     os.makedirs(dirname, exist_ok=True)
     setup_logging_config(dirname)
     logger = logging.getLogger('main')
-    logger.setLevel(logging.INFO)
+    logger.setLevel(loglevel)
 
     U, S, Vh = np.linalg.svd(mat_bob)
     _normalization_factor = 1./np.max(S)
@@ -103,16 +104,6 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000):
 
     plt.colorbar()
     plt.show()
-
-    #_one = np.zeros((3, n))
-    #_one[0, 0] = 1
-    #_one[1, 1] = 1
-    #_one[2, 2] = 1
-    #plt.matshow(np.abs(_one@eff_mat_bob@reception_matrix))
-    #plt.matshow(np.abs(eff_mat_bob@reception_matrix))
-    #plt.colorbar()
-    #plt.show()
-    #raise
 
     power = 10**(snr/10.)
     logger.info("SNR: %f dB", snr)
@@ -176,6 +167,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000):
 
     save_results(dirname, results, snr)
 
+    plt.figure()
     if not precoded:
         plt.plot(results['k'], results['secCapacTheo'], 'o-', label="Theoretical Values")
     plt.plot(results['k'], results['secCapacMC'], '^-', label="Monte Carlo Simulation")
