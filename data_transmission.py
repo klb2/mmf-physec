@@ -10,7 +10,6 @@ from scipy import io
 from read_matrices import read_measurement_file, EVE, BOB, read_mat_file
 from util import RESULTS_DIR
 
-
 logging.basicConfig(format="%(asctime)s - [%(levelname)8s]: %(message)s")
 
 CMAP = "hot"
@@ -25,8 +24,6 @@ def expected_received_data(eff_channel, reception_matrix, data):
     n = len(reception_matrix)
     data = pack_data(data, n)
     noise = np.random.rand(n) + 1j*np.random.rand(n)
-    #data = 10*data
-    #noise = 10*noise
     received = data @ eff_channel + noise
     received = received @ reception_matrix
     received = unpack_data(received, n)
@@ -82,15 +79,9 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
     rec_eve = mat_data["y_Eve"]
     rec_eve = rec_eve.T @ inv_eff_mat_eve
     rec_eve = rec_eve.T
-    #rec_eve = inv_eff_mat_eve @ rec_eve
-    #_rec_data_eve = rec_eve[1:3, :] 
-    #_rec_data_eve = np.ravel(_rec_data_eve, order="F")
-    #_rec_data_eve = np.real(_rec_data_eve)
     _rec_data_eve = unpack_data(rec_eve)
     _rec_image_eve = np.reshape(_rec_data_eve, (30, 30), order="F")
 
-    #expected = expected_received_data(np.eye(55), np.eye(55), mat_data["data"])
-    #expected = expected_received_data(eff_mat_bob, reception_matrix, mat_data["data"])
     expected = expected_received_data(eff_mat_eve, inv_eff_mat_eve, mat_data["data"])
     expected_image = np.reshape(expected, (30, 30), order="F")
 
@@ -116,7 +107,6 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    #parser.add_argument("-k", type=int, help="Max number of used modes", default=2)
     parser.add_argument("mat_file", help="Mat-file with matrices")
     parser.add_argument("data_file", help="Mat-file with transmitted data")
     parser.add_argument("--export", action="store_true")
