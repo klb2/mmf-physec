@@ -13,4 +13,4 @@ python3 svd_precoding.py --matrix="$MEASUREMENT_FILE" -k 15 -s 10 --precoded
 
 echo "---------------------------------------------------"
 echo "Show data transmission"
-python3 data_transmission.py "$MEASUREMENT_FILE" "$DATA_MEASUREMENT"
+python3 data_transmission.py "$MEASUREMENT_FILE" "$DATA_MEASUREMENT" --export
