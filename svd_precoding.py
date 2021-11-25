@@ -1,3 +1,38 @@
+"""Calculations and simulations of secrecy rate for the BPSK example
+
+This module contains the calculations and simulations of the secrecy rate of a
+BPSK tranmission over a MMF channel with SVD precoding.
+Both perfect SVD precoding (upper bound) and real measurements of optical SVD
+precoding are supported.
+
+
+Copyright (C) 2021 Karl-Ludwig Besser
+
+This program is used in the article:
+S. Rothe, K.-L. Besser, N. Koukourakis, E. Jorswieck, and J. Czarske,
+"Programmable Optical Data Transmission Through Multimode Fibres Enabling
+Confidentiality by Physical Layer Security", 2021.
+
+
+License:
+This program is licensed under the GPLv3 license. If you in any way use this
+code for research that results in publications, please cite our original
+article listed above.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+Author: Karl-Ludwig Besser, Technische Universität Braunschweig
+"""
+__author__ = "Karl-Ludwig Besser"
+__copyright__ = "Copyright (C) 2021 Karl-Ludwig Besser"
+__credits__ = ["Karl-Ludwig Besser"]
+__license__ = "GPLv3"
+__version__ = "1.0"
+
+
 import logging
 import os
 

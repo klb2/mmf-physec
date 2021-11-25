@@ -1,3 +1,35 @@
+"""Show transmitted and received images.
+
+This module shows the results of the image transmission measurements.
+It shows both the transmitted image and the received images at Bob and Eve.
+
+
+Copyright (C) 2021 Karl-Ludwig Besser
+
+This program is used in the article:
+S. Rothe, K.-L. Besser, N. Koukourakis, E. Jorswieck, and J. Czarske,
+"Programmable Optical Data Transmission Through Multimode Fibres Enabling
+Confidentiality by Physical Layer Security", 2021.
+
+
+License:
+This program is licensed under the GPLv3 license. If you in any way use this
+code for research that results in publications, please cite our original
+article listed above.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+Author: Karl-Ludwig Besser, Technische Universität Braunschweig
+"""
+__author__ = "Karl-Ludwig Besser"
+__copyright__ = "Copyright (C) 2021 Karl-Ludwig Besser"
+__credits__ = ["Karl-Ludwig Besser"]
+__license__ = "GPLv3"
+__version__ = "1.0"
+
 import logging
 import os
 
