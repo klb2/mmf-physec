@@ -93,8 +93,6 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
     #expected = expected_received_data(eff_mat_bob, reception_matrix, mat_data["data"])
     expected = expected_received_data(eff_mat_eve, inv_eff_mat_eve, mat_data["data"])
     expected_image = np.reshape(expected, (30, 30), order="F")
-    #plt.matshow(expected_image)
-    #plt.colorbar()
 
     #fig, axs = plt.subplots(2, 2)
     fig = plt.figure() # constrained_layout=True
@@ -111,7 +109,7 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
                    cmap=CMAP)
         plt.imsave(os.path.join(RESULTS_DIR, "image_eve.pdf"), _rec_image_eve,
                    cmap=CMAP)
-    return mat_data
+    #return mat_data
 
 
 
