@@ -42,7 +42,7 @@ from scipy import stats
 from scipy import io
 
 from read_matrices import read_measurement_file, EVE, BOB
-from util import setup_logging_config, generate_data, save_results, RESULTS_DIR
+from util import setup_logging_config, generate_data, save_results, RESULTS_DIR, RESULTS_IMG
 from waterfilling import water_filling
 
 # Tse 2005 page 294
@@ -62,6 +62,29 @@ def calc_bit_flip_prob(noise_trans_matrix, power_vec):
     noise_var = np.real(noise_trans_matrix @ np.conj(noise_trans_matrix).T)
     q_val = stats.norm.sf(power_vec/(np.sqrt(np.diag(noise_var))))
     return q_val
+
+
+def monte_carlo_simulation(messages, power, eff_mat_bob, reception_matrix,
+                           eff_mat_eve, inv_eff_mat_eve=None):
+    if inv_eff_mat_eve is None:
+        inv_eff_mat_eve = np.linalg.inv(eff_mat_eve)
+
+    num_samples, num_streams = np.shape(messages)
+    n = len(eff_mat_bob)
+
+    tx_symbols = np.zeros((num_samples, n))
+    tx_symbols[:, :num_streams] = power * messages
+
+    # Monte Carlo Simulations
+    noise_bob = np.random.randn(num_samples, n) + 1j*np.random.randn(num_samples, n)
+    noise_eve = np.random.randn(num_samples, n) + 1j*np.random.randn(num_samples, n)
+    rec_bob = tx_symbols @ eff_mat_bob + noise_bob
+    rec_eve = tx_symbols @ eff_mat_eve + noise_eve
+    est_bob = rec_bob @ reception_matrix
+    est_eve = rec_eve @ inv_eff_mat_eve
+    est_mess_bob = np.real(np.sign(est_bob[:, :num_streams]))
+    est_mess_eve = np.real(np.sign(est_eve[:, :num_streams]))
+    return est_mess_bob, est_mess_eve
 
 
 def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
@@ -128,19 +151,11 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
         power_vec_wf[:_k] = _power_vec_wf
         #logger.debug(power_vec_wf)
         logger.debug("Sum power allocated vs available power: {:.3f}/{:.3f}".format(sum(power_vec_wf), power))
-
-        # Monte Carlo Simulations
+    
         messages = generate_data(_k, num_samples, mod="bpsk")
-        tx_symbols = np.zeros((num_samples, n))
-        tx_symbols[:, :_k] = _power_vec_wf * messages
-        noise_bob = np.random.randn(num_samples, n) + 1j*np.random.randn(num_samples, n)
-        noise_eve = np.random.randn(num_samples, n) + 1j*np.random.randn(num_samples, n)
-        rec_bob = tx_symbols @ eff_mat_bob + noise_bob
-        rec_eve = tx_symbols @ eff_mat_eve + noise_eve
-        est_bob = rec_bob @ reception_matrix
-        est_eve = rec_eve @ inv_eff_mat_eve
-        est_mess_bob = np.real(np.sign(est_bob[:, :_k]))
-        est_mess_eve = np.real(np.sign(est_eve[:, :_k]))
+        est_mess_bob, est_mess_eve = monte_carlo_simulation(messages,
+                _power_vec_wf, eff_mat_bob, reception_matrix, eff_mat_eve,
+                inv_eff_mat_eve)
 
         bit_flip_bob = np.count_nonzero(est_mess_bob != messages, axis=0)/num_samples
         bit_flip_eve = np.count_nonzero(est_mess_eve != messages, axis=0)/num_samples
@@ -176,7 +191,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
     plt.ylabel("Secrecy Capacity [bit]")
     plt.legend()
     plt.tight_layout()
-    _plot_fn = "results-snr{}.png".format(snr)
+    _plot_fn = RESULTS_IMG.format(snr)
     plt.savefig(os.path.join(dirname, _plot_fn), dpi=200)
 
 
@@ -189,6 +204,9 @@ if __name__ == "__main__":
     parser.add_argument("--matrix", help="Mat-file with matrices")
     parser.add_argument("--num_samples", type=int, default=100000, help="Number of Monte Carlo samples")
     parser.add_argument("--precoded", action="store_true")
+    parser.add_argument("--plot", action="store_true")
     args = vars(parser.parse_args())
+    plot = args.pop("plot")
     main(**args)
-    plt.show()
+    if plot:
+        plt.show()

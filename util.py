@@ -7,6 +7,8 @@ import pandas as pd
 
 
 RESULTS_DIR = "results"
+RESULTS_DATA = "capac_results-snr{}.dat"
+RESULTS_IMG = "results-snr{}.png"
 
 
 def setup_logging_config(dirname, level=logging.DEBUG):
@@ -44,5 +46,5 @@ def generate_data(num_streams, num_samples, mod="bpsk"):
     return data
 
 def save_results(dirname, results, snr):
-    dat_file = os.path.join(dirname, "capac_results-snr{}.dat".format(snr))
+    dat_file = os.path.join(dirname, RESULTS_DATA.format(snr))
     pd.DataFrame.from_dict(results).to_csv(dat_file, sep='\t', index=False)
