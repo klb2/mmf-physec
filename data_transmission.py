@@ -38,9 +38,11 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from scipy import stats
 from scipy import io
+from digcommpy import encoders, decoders, channels
 
 from read_matrices import read_measurement_file, EVE, BOB, read_mat_file
 from util import RESULTS_DIR
+from svd_precoding import monte_carlo_simulation, calc_power_waterfilling
 
 logging.basicConfig(format="%(asctime)s - [%(levelname)8s]: %(message)s")
 
@@ -100,6 +102,10 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
 
     mat_data = read_data_file(data_file)
     #plt.matshow(mat_data["transmitted_image"])
+    uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export)
+    coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve)
+
+def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export):
     rec_bob_post = mat_data["y_Bob_after_decoding"]
     _rec_data_bob = rec_bob_post[1:3, :] 
     _rec_data_bob = np.ravel(_rec_data_bob, order="F")
@@ -134,6 +140,43 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
                    cmap=CMAP)
     #return mat_data
 
+def coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve):
+    num_streams = 4
+    power = 10.
+    sing_val = np.diag(S)[:num_streams]
+    power_vec = calc_power_waterfilling(sing_val, power)
+    image = mat_data["transmitted_image"]
+    shape_img = np.shape(image)
+    vec_image = np.reshape(image, (1, -1))
+    code_length = 4096
+    bit_flip = {BOB: .40, EVE: .499}
+    _channels = {k: channels.BscChannel(v) for k, v in bit_flip.items()}
+    _encoder = encoders.PolarWiretapEncoder(code_length, "BSC", "BSC", bit_flip[BOB], bit_flip[EVE])#, info_length_bob=1)
+    _decoder = decoders.PolarWiretapDecoder(code_length, "BSC", "BSC", pos_lookup=_encoder.pos_lookup)
+    #_encoder = encoders.PolarEncoder(code_length, 10, "BSC", bit_flip[BOB])
+    #_decoder = decoders.PolarDecoder(code_length, 10, "BSC", pos_lookup=_encoder)
+    print(_encoder.info_length)
+    print(_encoder.info_length_bob)
+    pad_width = _encoder.info_length - (np.shape(vec_image)[1] % _encoder.info_length)
+    vec_image = np.pad(vec_image, [[0, 0], [0, pad_width]])
+    vec_image = np.reshape(vec_image, (-1, _encoder.info_length))
+    enc_image = _encoder.encode_messages(vec_image)
+    print(enc_image.shape)
+    messages = np.reshape(enc_image, (-1, num_streams))
+    messages = 2*messages - 1.
+    est_code_bob, est_code_eve = monte_carlo_simulation(messages, power,
+            eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve)
+    _received = {BOB: est_code_bob, EVE: est_code_eve}
+    _received = {k: (v+1)/2 for k, v in _received.items()}
+    _received = {k: np.reshape(v, (-1, _encoder.code_length)) for k, v in _received.items()}
+    dec_images = {k: _decoder.decode_messages(v, channel=_channels[k])
+                  for k, v in _received.items()}
+    dec_images = {k: v.reshape((1, -1))[0, :-pad_width]
+                  for k, v in dec_images.items()}
+    dec_images = {k: v.reshape(np.shape(image)) for k, v in dec_images.items()}
+    print(dec_images)
+    plt.matshow(dec_images[BOB], cmap=CMAP)
+    plt.matshow(dec_images[EVE], cmap=CMAP)
 
 
 if __name__ == "__main__":
