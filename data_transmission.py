@@ -103,7 +103,8 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
     mat_data = read_data_file(data_file)
     #plt.matshow(mat_data["transmitted_image"])
     uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export)
-    coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve)
+    coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve,
+                inv_eff_mat_eve, export=export)
 
 def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export):
     rec_bob_post = mat_data["y_Bob_after_decoding"]
@@ -125,6 +126,7 @@ def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export):
 
     #fig, axs = plt.subplots(2, 2)
     fig = plt.figure() # constrained_layout=True
+    fig.suptitle("Uncoded Transmission")
     gs = GridSpec(2, 2, figure=fig)
     _im_orig = fig.add_subplot(gs[0, :]).matshow(mat_data["transmitted_image"], cmap=CMAP)
     _im_bob = fig.add_subplot(gs[1, 0]).matshow(_rec_image_bob, cmap=CMAP)
@@ -134,34 +136,29 @@ def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export):
         os.makedirs(RESULTS_DIR, exist_ok=True)
         plt.imsave(os.path.join(RESULTS_DIR, "image_original.pdf"),
                    mat_data["transmitted_image"], cmap=CMAP)
-        plt.imsave(os.path.join(RESULTS_DIR, "image_bob.pdf"), _rec_image_bob,
+        plt.imsave(os.path.join(RESULTS_DIR, "image_bob-uncoded.pdf"), _rec_image_bob,
                    cmap=CMAP)
-        plt.imsave(os.path.join(RESULTS_DIR, "image_eve.pdf"), _rec_image_eve,
+        plt.imsave(os.path.join(RESULTS_DIR, "image_eve-uncoded.pdf"), _rec_image_eve,
                    cmap=CMAP)
     #return mat_data
 
-def coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve):
+def coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff_mat_eve, export=False):
     num_streams = 4
     power = 10.
+    code_length = 8192
     sing_val = np.diag(S)[:num_streams]
     power_vec = calc_power_waterfilling(sing_val, power)
     image = mat_data["transmitted_image"]
     shape_img = np.shape(image)
     vec_image = np.reshape(image, (1, -1))
-    code_length = 4096
-    bit_flip = {BOB: .40, EVE: .499}
+    bit_flip = {BOB: .42, EVE: .49}
     _channels = {k: channels.BscChannel(v) for k, v in bit_flip.items()}
     _encoder = encoders.PolarWiretapEncoder(code_length, "BSC", "BSC", bit_flip[BOB], bit_flip[EVE])#, info_length_bob=1)
     _decoder = decoders.PolarWiretapDecoder(code_length, "BSC", "BSC", pos_lookup=_encoder.pos_lookup)
-    #_encoder = encoders.PolarEncoder(code_length, 10, "BSC", bit_flip[BOB])
-    #_decoder = decoders.PolarDecoder(code_length, 10, "BSC", pos_lookup=_encoder)
-    print(_encoder.info_length)
-    print(_encoder.info_length_bob)
     pad_width = _encoder.info_length - (np.shape(vec_image)[1] % _encoder.info_length)
     vec_image = np.pad(vec_image, [[0, 0], [0, pad_width]])
     vec_image = np.reshape(vec_image, (-1, _encoder.info_length))
     enc_image = _encoder.encode_messages(vec_image)
-    print(enc_image.shape)
     messages = np.reshape(enc_image, (-1, num_streams))
     messages = 2*messages - 1.
     est_code_bob, est_code_eve = monte_carlo_simulation(messages, power,
@@ -174,9 +171,19 @@ def coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve, inv_eff
     dec_images = {k: v.reshape((1, -1))[0, :-pad_width]
                   for k, v in dec_images.items()}
     dec_images = {k: v.reshape(np.shape(image)) for k, v in dec_images.items()}
-    print(dec_images)
-    plt.matshow(dec_images[BOB], cmap=CMAP)
-    plt.matshow(dec_images[EVE], cmap=CMAP)
+
+    fig = plt.figure() # constrained_layout=True
+    fig.suptitle("Polar Wiretap Coded Transmission")
+    gs = GridSpec(2, 2, figure=fig)
+    _im_orig = fig.add_subplot(gs[0, :]).matshow(image, cmap=CMAP)
+    _im_bob = fig.add_subplot(gs[1, 0]).matshow(dec_images[BOB], cmap=CMAP)
+    _im_eve = fig.add_subplot(gs[1, 1]).matshow(dec_images[EVE], cmap=CMAP)
+    if export:
+        os.makedirs(RESULTS_DIR, exist_ok=True)
+        plt.imsave(os.path.join(RESULTS_DIR, "image_bob-coded.pdf"), dec_images[BOB],
+                   cmap=CMAP)
+        plt.imsave(os.path.join(RESULTS_DIR, "image_eve-coded.pdf"), dec_images[EVE],
+                   cmap=CMAP)
 
 
 if __name__ == "__main__":
