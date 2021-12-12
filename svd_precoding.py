@@ -43,7 +43,7 @@ from scipy import io
 
 from read_matrices import read_measurement_file, EVE, BOB
 from util import setup_logging_config, generate_data, save_results, RESULTS_DIR, RESULTS_IMG
-from waterfilling import water_filling
+from waterfilling import water_filling, water_filling_bsc
 
 # Tse 2005 page 294
 
@@ -54,9 +54,10 @@ def capac_bsc(bit_flip_prob):
     return 1.-stats.bernoulli.entropy(p=bit_flip_prob)/np.log(2)
 
 def calc_power_waterfilling(sing_values, power):
-    alpha_i = 1/sing_values**2
-    power_vector = water_filling(alpha_i, power)
-    return power_vector
+    #alpha_i = 1/sing_values**2
+    #power_vector = water_filling(alpha_i, power)
+    #return power_vector
+    return water_filling_bsc(sing_values, power)
 
 def calc_bit_flip_prob(noise_trans_matrix, power_vec):
     noise_var = np.real(noise_trans_matrix @ np.conj(noise_trans_matrix).T)
@@ -147,6 +148,7 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
         sing_val = np.diag(S)[:_k]
         logger.debug("Singular values: %s", sing_val)
         _power_vec_wf = calc_power_waterfilling(sing_val, power)
+        #_power_vec_wf = water_filling_bsc(sing_val, power)
         power_vec_wf = np.zeros(n)#np.zeros_like(S)
         power_vec_wf[:_k] = _power_vec_wf
         #logger.debug(power_vec_wf)
