@@ -43,7 +43,7 @@ from scipy import io
 
 from read_matrices import read_measurement_file, EVE, BOB
 from util import setup_logging_config, generate_data, save_results, RESULTS_DIR, RESULTS_IMG
-from waterfilling import water_filling, water_filling_bsc
+from waterfilling import water_filling_bsc
 
 # Tse 2005 page 294
 
@@ -127,16 +127,18 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
         eff_mat_bob = _mat_prec[BOB]
         eff_mat_eve = _mat_prec[EVE]
         plt.matshow(np.abs(eff_mat_bob))
+        #plt.imsave(os.path.join(dirname, "effective-matrix.pdf"), np.abs(eff_mat_bob))
         eff_mat_bob = eff_mat_bob @ Vh #np.conj(Vh).T  # saved matrix is U^H @ Bob @ V
     else:
         precoding_matrix = np.conj(U).T
         eff_mat_bob = precoding_matrix @ mat_bob
         eff_mat_eve = precoding_matrix @ mat_eve
         plt.matshow(np.abs(precoding_matrix @ mat_bob @ reception_matrix))
+        #plt.imsave(os.path.join(dirname, "effective-matrix.pdf"), np.abs(precoding_matrix @ mat_bob @ reception_matrix))
     inv_eff_mat_eve = np.linalg.inv(eff_mat_eve)
 
     plt.colorbar()
-    plt.show()
+    #plt.show()
 
     power = 10**(snr/10.)
     logger.info("SNR: %f dB", snr)
