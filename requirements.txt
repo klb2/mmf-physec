@@ -4,3 +4,4 @@ matplotlib
 jupyter
 h5py
 pandas
+digcommpy
