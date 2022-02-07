@@ -114,6 +114,8 @@ def main(snr, n=3, k=1, matrix=None, precoded=False, num_samples=100000,
     logger = logging.getLogger('main')
     logger.setLevel(loglevel)
 
+    _S_eve = np.linalg.svd(mat_eve)[1]
+    mat_eve = mat_eve/np.max(_S_eve)
     U, S, Vh = np.linalg.svd(mat_bob)
     _normalization_factor = 1./np.max(S)
 
