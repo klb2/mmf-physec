@@ -10,5 +10,7 @@ do
 	python3 svd_precoding.py --matrix="$MEASUREMENT_FILE$counter.mat" -k 15 -s 10
 	echo "> Optical SVD (actual measured channel)"
 	python3 svd_precoding.py --matrix="$MEASUREMENT_FILE$counter.mat" -k 15 -s 10 --precoded
+	echo "> No Precoding (based on measured channel)"
+	python3 no_precoding.py --matrix="$MEASUREMENT_FILE$counter.mat" -k 15 -s 10
 done
 python show_capacity_statistics.py
