@@ -43,6 +43,7 @@ The present code was developed and tested with the following versions:
 - scipy 1.8
 - Pandas 1.4.1
 - h5py 3.6
+- digcommpy 0.8
 
 Make sure you have [Python3](https://www.python.org/downloads/) installed on
 your computer.
