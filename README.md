@@ -36,12 +36,13 @@ to run the notebooks in your browser without setting everything up locally.
 ### Local Installation
 If you want to run it locally on your machine, Python3 and Jupyter are needed.
 The present code was developed and tested with the following versions:
-- Python 3.9
+- Python 3.10
 - Jupyter 1.0
-- numpy 1.21
-- scipy 1.7
-- Pandas 1.1.4
-- h5py 3.1
+- notebook 6.4
+- numpy 1.22
+- scipy 1.8
+- Pandas 1.4.1
+- h5py 3.6
 
 Make sure you have [Python3](https://www.python.org/downloads/) installed on
 your computer.
