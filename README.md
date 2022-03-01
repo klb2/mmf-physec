@@ -3,7 +3,7 @@
 This repository is accompanying the paper "Programmable Optical Data
 Transmission Through Multimode Fibres Enabling Confidentiality by Physical
 Layer Security" (S. Rothe, K.-L. Besser, D. Krause, R. Kuschmierz, N.
-Koukourakis, E. Jorswieck, J. Czarske. 2021. [arXiv:XXX]()).
+Koukourakis, E. Jorswieck, J. Czarske. 2022. [arXiv:XXX]()).
 
 The idea is to make all calculations, simulations, and presented results
 publicly available to the reader and, therefore, reproducible.
@@ -99,6 +99,8 @@ This research was supported in part by the Deutsche Forschungsgemeinschaft
 This program is licensed under the GPLv3 license. If you in any way use this
 code for research that results in publications, please cite our original
 article listed above.
+
+You can use the following BibTeX entry
 
 ```bibtex
 @article{Rothe2022mmfphysec,
