@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This repository is accompanying the paper "Programmable Optical Data
+# Transmission Through Multimode Fibres Enabling Confidentiality by Physical
+# Layer Security" (S. Rothe, K.-L. Besser, D. Krause, R. Kuschmierz, N.
+# Koukourakis, E. Jorswieck, J. Czarske. 2022).
+
+
 MEASUREMENT_FILE="measurements/mmf-measurement.mat"
 DATA_MEASUREMENT="measurements/data-measurement.mat"
 

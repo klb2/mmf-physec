@@ -3,7 +3,8 @@
 This repository is accompanying the paper "Programmable Optical Data
 Transmission Through Multimode Fibres Enabling Confidentiality by Physical
 Layer Security" (S. Rothe, K.-L. Besser, D. Krause, R. Kuschmierz, N.
-Koukourakis, E. Jorswieck, J. Czarske. 2022. [arXiv:XXX]()).
+Koukourakis, E. Jorswieck, J. Czarske. 2022.
+[arXiv:2203.02064](https://arxiv.org/abs/2203.02064)).
 
 The idea is to make all calculations, simulations, and presented results
 publicly available to the reader and, therefore, reproducible.
@@ -110,7 +111,7 @@ You can use the following BibTeX entry
   month = {3},
   journal = {Submitted for publication},
   archiveprefix = {arXiv},
-  eprint = {},
-  primaryClass = {physics.optics},
+  eprint = {2203.02064},
+  primaryClass = {physics.app-ph},
 }
 ```
