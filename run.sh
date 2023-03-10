@@ -23,3 +23,7 @@ python3 no_precoding.py --matrix="$MEASUREMENT_FILE" -k 15 -s 10 --plot
 echo "---------------------------------------------------"
 echo "Show data transmission"
 python3 data_transmission.py "${DATA_MEASUREMENT}" "${LOGO_FILE}"
+
+echo "---------------------------------------------------"
+echo "Run coded image transmission"
+sh run_coded_image.sh
