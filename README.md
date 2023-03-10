@@ -1,15 +1,18 @@
 # Physical Layer Security on Multi-Mode Fibers
 
-This repository is accompanying the paper "Programmable Optical Data
-Transmission Through Multimode Fibres Enabling Confidentiality by Physical
-Layer Security" (S. Rothe, K.-L. Besser, D. Krause, R. Kuschmierz, N.
-Koukourakis, E. Jorswieck, J. Czarske. 2022.
-[arXiv:2203.02064](https://arxiv.org/abs/2203.02064)).
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/klb2/mmf-physec/HEAD)
+![GitHub](https://img.shields.io/github/license/klb2/mmf-physec)
+[![DOI](https://img.shields.io/badge/doi-10.34133/research.0065-informational)](https://doi.org/10.34133/research.0065)
+
+This repository is accompanying the paper "Securing Data in Multimode Fibers by
+Exploiting Mode-Dependent Light Propagation Effects" (S. Rothe, K.-L. Besser,
+D. Krause, R. Kuschmierz, N.  Koukourakis, E. Jorswieck, J. Czarske. Research,
+vol. 6: 0065, Jan. 2023.
+[DOI:10.34133/research.0065](https://doi.org/10.34133/research.0065)).
 
 The idea is to make all calculations, simulations, and presented results
 publicly available to the reader and, therefore, reproducible.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/klb2/mmf-physec/HEAD)
 
 
 ## File List
@@ -48,8 +51,6 @@ A detailed description can be found in the paper.
   to Eve, both with and without precoding at the transmitter
 - `data-measurement.mat`: Measurements of the transmission of the TU Dresden
   logo
-- `statistic/`: Folder containing multiple measurements of the MMF for
-  averaging purposes
 
 
 ## Usage
@@ -69,7 +70,7 @@ The present code was developed and tested with the following versions:
 - scipy 1.8
 - Pandas 1.4.1
 - h5py 3.6
-- digcommpy 0.8
+- digcommpy 0.9
 
 Make sure you have [Python3](https://www.python.org/downloads/) installed on
 your computer.
@@ -104,14 +105,18 @@ article listed above.
 You can use the following BibTeX entry
 
 ```bibtex
-@article{Rothe2022mmfphysec,
-  author = {Rothe, Stefan and Besser, Karl-Ludwig and Krause, David and Kuschmierz, Robert and Koukourakis, Nektarios and Jorswieck, Eduard and Czarske, J\"urgen W.},
-  title = {Programmable Optical Data Transmission Through Multimode Fibres Enabling Confidentiality by Physical Layer Security},
-  year = {2022},
-  month = {3},
-  journal = {Submitted for publication},
-  archiveprefix = {arXiv},
-  eprint = {2203.02064},
-  primaryClass = {physics.app-ph},
+@article{Rothe2023mmfphysec,
+	author = {Rothe, Stefan and Besser, Karl-Ludwig and Krause, David and Kuschmierz, Robert and Koukourakis, Nektarios and Jorswieck, Eduard A. and Czarske, Jürgen W.},
+	title = {Securing Data in Multimode Fibres by Exploiting Mode-Dependent Light Propagation Effects},
+	journal = {Research},
+	year = {2023},
+	month = {1},
+	volume = {6},
+	eid = {0065},
+	publisher = {American Association for the Advancement of Science (AAAS)},
+	archiveprefix = {arXiv},
+	eprint = {2203.02064},
+	primaryclass = {physics.app-ph},
+	doi = {10.34133/research.0065},
 }
 ```
