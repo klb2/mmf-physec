@@ -8,7 +8,8 @@ This repository is accompanying the paper "Securing Data in Multimode Fibers by
 Exploiting Mode-Dependent Light Propagation Effects" (S. Rothe, K.-L. Besser,
 D. Krause, R. Kuschmierz, N.  Koukourakis, E. Jorswieck, J. Czarske. Research,
 vol. 6: 0065, Jan. 2023.
-[DOI:10.34133/research.0065](https://doi.org/10.34133/research.0065)).
+[DOI:10.34133/research.0065](https://doi.org/10.34133/research.0065),
+[arXiv:2203.02064](https://arxiv.org/abs/2203.02064)).
 
 The idea is to make all calculations, simulations, and presented results
 publicly available to the reader and, therefore, reproducible.
