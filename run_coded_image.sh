@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This repository is accompanying the paper "Securing Data in Multimode Fibers
+# by Exploiting Mode-Dependent Light Propagation Effects" (S. Rothe, K.-L.
+# Besser, D. Krause, R. Kuschmierz, N. Koukourakis, E. Jorswieck, J. Czarske.
+# Research, vol. 6: 0065, Jan. 2023. DOI:10.34133/research.0065).
+
+
 PATH_MEAS="measurements/coded_image"
 PATH_RESULTS="results"
 PATH_LOGO="logo"

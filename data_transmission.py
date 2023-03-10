@@ -4,12 +4,13 @@ This module shows the results of the image transmission measurements.
 It shows both the transmitted image and the received images at Bob and Eve.
 
 
-Copyright (C) 2021 Karl-Ludwig Besser
+Copyright (C) 2023 Karl-Ludwig Besser
 
 This program is used in the article:
-S. Rothe, K.-L. Besser, N. Koukourakis, E. Jorswieck, and J. Czarske,
-"Programmable Optical Data Transmission Through Multimode Fibres Enabling
-Confidentiality by Physical Layer Security", 2021.
+"Securing Data in Multimode Fibers by Exploiting Mode-Dependent Light
+Propagation Effects" (S. Rothe, K.-L. Besser, D. Krause, R. Kuschmierz, N.
+Koukourakis, E. Jorswieck, J. Czarske. Research, vol. 6: 0065, Jan. 2023.
+DOI:10.34133/research.0065).
 
 
 License:
