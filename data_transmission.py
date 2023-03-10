@@ -106,23 +106,21 @@ def main(mat_file, data_file, export=False, loglevel=logging.INFO):
     coded_image(mat_data, S, eff_mat_bob, reception_matrix, eff_mat_eve,
                 inv_eff_mat_eve, export=export)
 
-def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export):
+def uncoded_image(mat_data, eff_mat_eve, inv_eff_mat_eve, export, size=(30, 30)):
     rec_bob_post = mat_data["y_Bob_after_decoding"]
     _rec_data_bob = rec_bob_post[1:3, :] 
     _rec_data_bob = np.ravel(_rec_data_bob, order="F")
-    assert np.all(_rec_data_bob == np.ravel(mat_data["data_received"]))
-    #_rec_data_bob = np.round(_rec_data_bob)
-    #_rec_data_bob = np.where(_rec_data_bob > .4, 1, 0)
-    _rec_image_bob = np.reshape(_rec_data_bob, (30, 30), order="F")
+    #assert np.all(_rec_data_bob == np.ravel(mat_data["data_received"]))
+    _rec_image_bob = np.reshape(_rec_data_bob, size, order="F")
 
     rec_eve = mat_data["y_Eve"]
     rec_eve = rec_eve.T @ inv_eff_mat_eve
     rec_eve = rec_eve.T
     _rec_data_eve = unpack_data(rec_eve)
-    _rec_image_eve = np.reshape(_rec_data_eve, (30, 30), order="F")
+    _rec_image_eve = np.reshape(_rec_data_eve, size, order="F")
 
     expected = expected_received_data(eff_mat_eve, inv_eff_mat_eve, mat_data["data"])
-    expected_image = np.reshape(expected, (30, 30), order="F")
+    expected_image = np.reshape(expected, size, order="F")
 
     #fig, axs = plt.subplots(2, 2)
     fig = plt.figure() # constrained_layout=True

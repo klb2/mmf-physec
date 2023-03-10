@@ -45,6 +45,9 @@ def generate_data(num_streams, num_samples, mod="bpsk"):
         raise NotImplementedError
     return data
 
-def save_results(dirname, results, snr):
-    dat_file = os.path.join(dirname, RESULTS_DATA.format(snr))
+def save_results(dirname, results, snr, filename=None):
+    if filename is None:
+        dat_file = os.path.join(dirname, RESULTS_DATA.format(snr))
+    else:
+        dat_file = os.path.join(dirname, filename)
     pd.DataFrame.from_dict(results).to_csv(dat_file, sep='\t', index=False)
