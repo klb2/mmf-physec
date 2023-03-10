@@ -8,6 +8,7 @@
 
 MEASUREMENT_FILE="measurements/mmf-measurement.mat"
 DATA_MEASUREMENT="measurements/data-measurement.mat"
+LOGO_FILE="logo/tud_logo_60.txt"
 
 echo "---------------------------------------------------"
 echo "Calculate the secrecy capacity for the BPSK example with SVD precoding"
@@ -21,4 +22,4 @@ python3 no_precoding.py --matrix="$MEASUREMENT_FILE" -k 15 -s 10 --plot
 
 echo "---------------------------------------------------"
 echo "Show data transmission"
-python3 data_transmission.py "$MEASUREMENT_FILE" "$DATA_MEASUREMENT" --export
+python3 data_transmission.py "${DATA_MEASUREMENT}" "${LOGO_FILE}"
